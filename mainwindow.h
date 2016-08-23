@@ -44,6 +44,10 @@ private slots:
 
     void on_setport_clicked();
 
+    void on_autoconn_clicked();
+
+    void on_pushButton_extset_clicked();
+
 private:
     Ui::MainWindow *ui;
     QSerialPort *mSerialPort;

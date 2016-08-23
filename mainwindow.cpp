@@ -30,9 +30,9 @@ MainWindow::MainWindow(QWidget *parent) :
     quitAction = new QAction("&Выход", this);
     connect(quitAction, &QAction::triggered, qApp, &QCoreApplication::quit);
 
-    trIcon = new QSystemTrayIcon();  //инициализируем объект
-    trIcon->setIcon(QIcon(":/img/icon.png"));  //устанавливаем иконку
-    trIcon->show();  //отображаем объект
+    trIcon = new QSystemTrayIcon();
+    trIcon->setIcon(QIcon(":/img/icon.png"));
+    trIcon->show();
     trIconMenu = new QMenu(this);
     trIconMenu->addAction(quitAction);
     trIcon->setContextMenu(trIconMenu);
@@ -48,6 +48,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->autohide->setChecked(settings->value("settings/autohide", 0).toBool());
     ui->autorun->setChecked(settings->value("settings/autorun", 0).toBool());
     ui->setport->setChecked(settings->value("settings/setport", 0).toBool());
+    ui->autoconn->setChecked(settings->value("settings/autoconnect", 0).toBool());
 
 
     foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts())
@@ -72,17 +73,18 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->comboBox_baudRate->addItems(baudRateList);
     ui->comboBox_baudRate->setCurrentIndex(10);
-
     ui->comboBox_parity->addItems(parityList);
     ui->comboBox_stopBit->addItems(stopBitsList);
     ui->comboBox_dataBit->addItems(dataBitsList);
 
-
-    // Создание Таблицы
-    //ui->tableWidget->setRowCount(); // указываем количество строк
-    //ui->tableWidget->setColumnCount(4); // указываем количество столбцов
     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    //ui->tableWidget->setHorizontalHeaderLabels(QStringList()<<"Дата"<<"VIN"<< "Код дефекта"<< "Время");
+
+    on_pushButton_extset_clicked();
+
+    if((settings->value("settings/autoconnect")) == 1)
+    {
+      on_pushButton_open_clicked();
+    }
 }
 
 MainWindow::~MainWindow()
@@ -100,7 +102,6 @@ void MainWindow::ReadMyCom()
     Sleeper::msleep(100);
     QString strk = tc->toUnicode(data_received);
     ui->textBrowser->insertPlainText(strk+"\n");
-   // qDebug()<< strk;
     set_vin=strk.left(4);
     set_defect_code=strk.mid(4,2 );
     set_work_time=strk.right(2);
@@ -109,7 +110,6 @@ void MainWindow::ReadMyCom()
     qDebug()<< set_work_time;
     on_pushButton_test_clicked();
 }
-
 
 void MainWindow::on_textBrowserRefesh()
 {
@@ -184,9 +184,6 @@ void MainWindow::on_pushButton_open_clicked()
     try
     {
         mSerialPort->setPortName(ui->comboBox_portName->currentText());
-
-//        settings->setValue("settings/port", ui->comboBox_portName->currentText());
-//        settings->sync();
 
         if (!mSerialPort->open(QIODevice::ReadWrite)) {
             QMessageBox::warning(this,"Внимание","Порт: " +(ui->comboBox_portName->currentText())+ " недоступен или используется другим приложением."
@@ -322,4 +319,37 @@ void MainWindow::on_setport_clicked()
      ui->comboBox_portName->addItem(info.portName());
     }
      settings->sync();
+}
+
+void MainWindow::on_autoconn_clicked()
+{
+    if(ui->autoconn->isChecked())
+    {
+     settings->setValue("settings/autoconnect", 1);
+    }
+    else
+    {
+     settings->setValue("settings/autoconnect", 0);
+    }
+     settings->sync();
+}
+
+void MainWindow::on_pushButton_extset_clicked()
+{
+      if(ui->setWidget->isHidden())
+      {
+       ui->setWidget->show();
+       ui->pushButton_extset->setText("-");
+       ui->widget->move(0,190);
+       ui->textBrowser->move(10,330);
+       ui->textBrowser->resize(220,300);
+      }
+      else
+      {
+      ui->setWidget->hide();
+      ui->pushButton_extset->setText("+");
+      ui->widget->move(0,90);
+      ui->textBrowser->move(10,230);
+      ui->textBrowser->resize(220,400);
+      }
 }
