@@ -6,6 +6,9 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    QCoreApplication::setOrganizationName("BERLOGA");
+    QCoreApplication::setApplicationName("DefState");
+    QCoreApplication::setApplicationVersion(QT_VERSION_STR);
     QApplication::setQuitOnLastWindowClosed(false);
     QSettings *settings = new QSettings("settings.conf",QSettings::IniFormat);
     MainWindow w;

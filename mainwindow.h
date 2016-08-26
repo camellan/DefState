@@ -34,25 +34,23 @@ private slots:
     void on_pushButton_test_clicked();
     void on_textBrowserRefesh();
     void ReadMyCom();
+    void about();
     void on_pushButton_reset_table_clicked();
     void on_pushButton_reset_row_clicked();
     void showHide(QSystemTrayIcon::ActivationReason);
-
     void on_autohide_clicked();
-
     void on_autorun_clicked();
-
     void on_setport_clicked();
-
     void on_autoconn_clicked();
-
     void on_pushButton_extset_clicked();
+    void on_pushButton_about_clicked();
 
 private:
     Ui::MainWindow *ui;
     QSerialPort *mSerialPort;
     QSystemTrayIcon *trIcon;
     QMenu *trIconMenu;
+    QMenu *aboutMenu;
     QAction *quitAction;
 };
 

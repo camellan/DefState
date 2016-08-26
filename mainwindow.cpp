@@ -10,6 +10,7 @@
 #include <QAction>
 #include <QSettings>
 #include <QDir>
+#include <QAction>
 #include "sleeper.h"
 
 int dat=0,vin=1,defect_code=2,work_time=3,str; //номера столбцов
@@ -38,6 +39,11 @@ MainWindow::MainWindow(QWidget *parent) :
     trIcon->setContextMenu(trIconMenu);
     connect(trIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),this,SLOT(showHide(QSystemTrayIcon::ActivationReason)));
 
+    aboutMenu = new QMenu(this);
+    aboutMenu->addAction("&О программе", this, &MainWindow::about);
+    aboutMenu->addAction("О &Qt", qApp, &QApplication::aboutQt);
+    ui->pushButton_about->setMenu(aboutMenu);
+
     mSerialPort = new QSerialPort;
 
     connect(mSerialPort,SIGNAL(readyRead()),this,SLOT(ReadMyCom()));
@@ -49,7 +55,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->autorun->setChecked(settings->value("settings/autorun", 0).toBool());
     ui->setport->setChecked(settings->value("settings/setport", 0).toBool());
     ui->autoconn->setChecked(settings->value("settings/autoconnect", 0).toBool());
-
 
     foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts())
         if(ui->setport->isChecked())
@@ -352,4 +357,17 @@ void MainWindow::on_pushButton_extset_clicked()
       ui->textBrowser->move(10,230);
       ui->textBrowser->resize(220,400);
       }
+}
+
+void MainWindow::about()
+{
+   QMessageBox::about(this, "О программе",
+           "Техзадание: Стригин В.Ф. (VF.Strigin@vaz.ru) \n"
+           "Разработка программы: Культяпов А.В. (camellan@yandex.ru) \n"
+           "Исходный код программы: https://github.com/camellan/defstate");
+}
+
+void MainWindow::on_pushButton_about_clicked()
+{
+    aboutMenu->exec();
 }

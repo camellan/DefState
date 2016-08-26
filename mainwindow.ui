@@ -108,7 +108,7 @@
    <widget class="QPushButton" name="pushButton_export">
     <property name="geometry">
      <rect>
-      <x>590</x>
+      <x>570</x>
       <y>660</y>
       <width>81</width>
       <height>23</height>
@@ -339,6 +339,26 @@
       </item>
      </layout>
     </widget>
+   </widget>
+   <widget class="QPushButton" name="pushButton_about">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>660</y>
+      <width>30</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>?</string>
+    </property>
    </widget>
   </widget>
  </widget>
