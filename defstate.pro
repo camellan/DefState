@@ -19,7 +19,7 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui
 
-RC_FILE = icon.rc
+RC_FILE = res.rc
 
 #DEFINES += QT_STATIC
 

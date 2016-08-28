@@ -362,9 +362,9 @@ void MainWindow::on_pushButton_extset_clicked()
 void MainWindow::about()
 {
    QMessageBox::about(this, "О программе",
-           "Техзадание: Стригин В.Ф. (VF.Strigin@vaz.ru) \n"
-           "Разработка программы: Культяпов А.В. (camellan@yandex.ru) \n"
-           "Исходный код программы: https://github.com/camellan/defstate");
+           "<b>Техзадание: </b> Стригин В.Ф. (VF.Strigin@vaz.ru)<br>"
+           "<b>Разработка программы: </b> Культяпов А.В. (camellan@yandex.ru)<br>"
+           "<b>Исходный код программы: </b> <a href='https://github.com/camellan/defstate'>https://github.com/camellan/defstate</a>");
 }
 
 void MainWindow::on_pushButton_about_clicked()
