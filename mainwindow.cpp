@@ -2,7 +2,7 @@
 #include <ui_mainwindow.h>
 #include <QTableWidget>
 #include <QMessageBox>
-#include <QDate>
+#include <QDateTime>
 #include <QFile>
 #include <QTextStream>
 #include <QTextCodec>
@@ -15,16 +15,14 @@
 
 int dat=0,vin=1,defect_code=2,work_time=3,str; //номера столбцов
 
-QString set_vin(""), set_defect_code(""), set_work_time("");
+QString set_vin("1234"), set_defect_code("567"), set_work_time("89");
 
-QDate date = QDate::currentDate();
+QDateTime date = QDateTime::currentDateTime();
 
 QSettings *settings = new QSettings("settings.conf",QSettings::IniFormat);
 QSettings *settings1 = new QSettings("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", QSettings::NativeFormat);
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
@@ -32,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(quitAction, &QAction::triggered, qApp, &QCoreApplication::quit);
 
     trIcon = new QSystemTrayIcon();
-    trIcon->setIcon(QIcon(":/img/icon.png"));
+    trIcon->setIcon(QIcon(":/img/iconn.png"));
     trIcon->show();
     trIconMenu = new QMenu(this);
     trIconMenu->addAction(quitAction);
@@ -42,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
     aboutMenu = new QMenu(this);
     aboutMenu->addAction("&О программе", this, &MainWindow::about);
     aboutMenu->addAction("О &Qt", qApp, &QApplication::aboutQt);
+
     ui->pushButton_about->setMenu(aboutMenu);
 
     mSerialPort = new QSerialPort;
@@ -71,9 +70,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QStringList baudRateList = QStringList() << "1200" << "2400" << "4800"
                                              << "9600" << "14400" << "19200" << "38400" << "43000" << "57600"
                                              << "76800" << "115200" << "128000" << "230400" << "256000" <<"460800"
-                                             << "921600" << "1382400";
-    QStringList parityList = QStringList() << "Нет" << "Чет" << "Нечет" << "Точка" << "Пробел";
-    QStringList stopBitsList = QStringList() << "1" << "1.5" << "2";
+                                             << "921600" << "1382400";    
+    QStringList parityList = QStringList() << "Нет" << "Чет" << "Нечет" << "Точка" << "Пробел";    
+    QStringList stopBitsList = QStringList() << "1" << "1.5" << "2";    
     QStringList dataBitsList = QStringList() << "8" << "7" << "6" << "5" << "4";
 
     ui->comboBox_baudRate->addItems(baudRateList);
@@ -95,10 +94,8 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
 	mSerialPort->close();
-    trIcon->hide();
     delete ui;
 }
-
 
 void MainWindow::ReadMyCom()
 {
@@ -116,9 +113,26 @@ void MainWindow::ReadMyCom()
     on_pushButton_test_clicked();
 }
 
-void MainWindow::on_textBrowserRefesh()
+void MainWindow::about()
 {
-    ui->textBrowser->moveCursor(QTextCursor::End);
+   QMessageBox::about(this, "О программе",
+           "<b>Техзадание: </b> Стригин В.Ф. (VF.Strigin@vaz.ru)<br>"
+           "<b>Разработка программы: </b> Культяпов А.В. (camellan@yandex.ru)<br>"
+           "<b>Исходный код программы: </b> <a href='https://github.com/camellan/defstate'>https://github.com/camellan/defstate</a>");
+}
+
+void MainWindow::showHide(QSystemTrayIcon::ActivationReason r)
+{
+    if (r==QSystemTrayIcon::Trigger){
+     if (!this->isVisible())
+    {
+        this->show();
+    }
+    else
+    {
+        this->hide();
+    }
+}
 }
 
 void MainWindow::saveAsCSV(QString filename)
@@ -157,10 +171,15 @@ void MainWindow::saveAsCSV(QString filename)
 
 }
 
+void MainWindow::on_textBrowserRefesh()
+{
+    ui->textBrowser->moveCursor(QTextCursor::End);
+}
+
 void MainWindow::on_pushButton_test_clicked()
 {
 
-    QTableWidgetItem *item_dat=new QTableWidgetItem(date.toString("dd.MM.yyyy"));
+    QTableWidgetItem *item_dat=new QTableWidgetItem(date.toString("dd.MM.yy - hh:mm"));
     QTableWidgetItem *item_vin=new QTableWidgetItem(set_vin);
     QTableWidgetItem *item_defect_code=new QTableWidgetItem(set_defect_code);
     QTableWidgetItem *item_work_time=new QTableWidgetItem(set_work_time);
@@ -228,10 +247,13 @@ void MainWindow::on_pushButton_open_clicked()
         }
         ui->pushButton_close->setDisabled(false);
         ui->pushButton_open->setDisabled(true);
+        trIcon->hide();
+        trIcon->setIcon(QIcon(":/img/icon.png"));
+        trIcon->show();
     } 
 	catch(...)
     {
-        QMessageBox::warning(this,"ERROR!","Cannot open the serialport!");
+        QMessageBox::warning(this,"ОШИБКА!","Невозможно открыть com-порт!");
     }
 }
 
@@ -240,6 +262,9 @@ void MainWindow::on_pushButton_close_clicked()
     mSerialPort->close();
     ui->pushButton_close->setDisabled(true);
     ui->pushButton_open->setDisabled(false);
+    trIcon->hide();
+    trIcon->setIcon(QIcon(":/img/iconn.png"));
+    trIcon->show();
 
 }
 
@@ -260,20 +285,6 @@ void MainWindow::on_pushButton_reset_row_clicked()
           ui->tableWidget->removeRow(str-1);
           str--;
         }
-}
-
-void MainWindow::showHide(QSystemTrayIcon::ActivationReason r)
-{
-    if (r==QSystemTrayIcon::Trigger){
-     if (!this->isVisible())
-    {
-        this->show();
-    }
-    else
-    {
-        this->hide();
-    }
-}
 }
 
 void MainWindow::on_autohide_clicked()
@@ -359,15 +370,20 @@ void MainWindow::on_pushButton_extset_clicked()
       }
 }
 
-void MainWindow::about()
-{
-   QMessageBox::about(this, "О программе",
-           "<b>Техзадание: </b> Стригин В.Ф. (VF.Strigin@vaz.ru)<br>"
-           "<b>Разработка программы: </b> Культяпов А.В. (camellan@yandex.ru)<br>"
-           "<b>Исходный код программы: </b> <a href='https://github.com/camellan/defstate'>https://github.com/camellan/defstate</a>");
-}
-
 void MainWindow::on_pushButton_about_clicked()
 {
     aboutMenu->exec();
+}
+
+
+void MainWindow::on_editable_clicked()
+{
+    if(ui->editable->isChecked())
+    {
+     ui->tableWidget->setEditTriggers(QAbstractItemView::DoubleClicked);
+    }
+    else
+    {
+     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    }
 }

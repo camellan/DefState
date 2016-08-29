@@ -285,6 +285,9 @@
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="1">
        <widget class="QCheckBox" name="autoconn">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;Авто-подключение к выбранному порту при старте программы.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>Автоподключение</string>
         </property>
@@ -292,6 +295,9 @@
       </item>
       <item row="1" column="0">
        <widget class="QCheckBox" name="autohide">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;Программа прячется в системный трей при запуске .&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>Автоскрытие</string>
         </property>
@@ -299,6 +305,9 @@
       </item>
       <item row="0" column="0">
        <widget class="QCheckBox" name="autorun">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;Авто-запуск программы при старте системы.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>Автозагрузка</string>
         </property>
@@ -306,6 +315,9 @@
       </item>
       <item row="0" column="1">
        <widget class="QCheckBox" name="setport">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;Запоминается выбранный порт.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>Запомнить порт</string>
         </property>
@@ -313,7 +325,7 @@
       </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget3">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -371,6 +383,25 @@
     </property>
     <property name="text">
      <string>?</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="editable">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>2</y>
+      <width>143</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;В этом режиме допускается редактирование записей таблицы.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string>Режим редактирования</string>
     </property>
    </widget>
   </widget>

@@ -45,6 +45,8 @@ private slots:
     void on_pushButton_extset_clicked();
     void on_pushButton_about_clicked();
 
+    void on_editable_clicked();
+
 private:
     Ui::MainWindow *ui;
     QSerialPort *mSerialPort;
